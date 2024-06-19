@@ -1,234 +1,177 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <regex>
 
 using namespace std;
 
 template <typename T>
-class LinkedList
-{
+class LinkedList {
 	T *head;
-
-public:
+	public: 
+	
 	string filename;
-	LinkedList(string filename)
-	{
+	LinkedList(string filename){
 		this->head = NULL;
 		this->filename = filename;
 	}
-
-	bool is_empty()
-	{
+	
+	
+	bool is_empty() {
 		return head == NULL;
 	}
-
-	void add_node(T *newNode)
-	{
-		if (exists_by_id(newNode->id))
-		{
+	
+	void add_node(T *newNode){
+		if(exists_by_id(newNode->id)) {
 			cout << "The given ID already exists" << endl;
 			return;
 		}
-		if (is_empty())
-		{
+		if(is_empty()){
 			head = newNode;
-		}
-		else
-		{
+		} else{
 			T *tail = head;
-			while (tail->next)
-			{
+			while(tail->next){
 				tail = tail->next;
 			}
 			tail->next = newNode;
 		}
 	}
-
-	void print_nodes()
-	{
-		if (is_empty())
-		{
+	
+	void print_nodes(){
+		if(is_empty()) { 
 			cout << "Linked list is empty" << endl;
 			return;
 		}
-
+		
 		T *temp = this->head;
-		while (temp != NULL)
-		{
+		while(temp != NULL){
 			temp->print();
 			temp = temp->next;
 		}
 	}
-
-	bool exists_by_id(int id)
-	{
-		if (is_empty())
-			return false;
+	
+	bool exists_by_id(int id){
+		if(is_empty()) return false;
 		T *temp = this->head;
-		while (temp != NULL)
-		{
-			if (temp->id == id)
-			{
+		while(temp != NULL){
+			if(temp->id == id) {
 				return true;
 			}
 			temp = temp->next;
 		}
 		return false;
 	}
-
-	void save_to_csv()
-	{
-		if (is_empty())
-		{
+	
+	void save_to_csv(){
+		if(is_empty()) {
 			cout << "Can't save an empty list;" << endl;
 			return;
 		}
 		ofstream file;
 		file.open(this->filename, ios::ate);
-		if (!file.is_open())
-		{
-			cout << "Unable to open file " << this->filename << endl;
+		if(!file.is_open()){
+			cout << "Unable to open file " << this->filename  << endl;
 			return;
 		}
 		T *temp = this->head;
-		while (temp != NULL)
-		{
+		while(temp != NULL){
 			file << temp->to_string() << '\n';
 			temp = temp->next;
 		}
-
+		
 		cout << "Data saved into " << this->filename << endl;
 	}
 };
 
-class Doctor
-{
-public:
+class Doctor{
+	public:
+	
 	int id;
 	string name;
 	string specialization;
 	Doctor *next;
-
-	Doctor()
-	{
+	
+	Doctor(){
 		this->next = NULL;
 	}
-
-	Doctor(int doctor_id, string name, string specialization)
-	{
+	
+	Doctor(int doctor_id, string name, string specialization){
 		this->id = doctor_id;
 		this->name = name;
 		this->specialization = specialization;
 		this->next = NULL;
 	}
-
-	void print()
-	{
-		cout << "ID: " << this->id << "\tName:  " << this->name << "\tSpecialization: " << this->specialization << endl;
+	
+	
+	void print(){
+		cout << "ID: " << this->id << "\tName:  " << this->name << "\tSpecialization: " << this->specialization << endl; 
 	}
-
-	string to_string()
-	{
-		return "" + std::to_string(this->id) + "," + this->name + "," + this->specialization;
+	
+	string to_string(){
+		return "" +  std::to_string(this->id) + "," + this->name + "," + this->specialization;
 	}
 };
 
-class Patient
-{
-public:
+class Patient{
+	public:
+	
 	int id;
 	string name;
 	string dob;
 	string gender;
-
+	
 	Patient *next;
-
-	Patient()
-	{
+	
+	Patient(){
 		this->next = NULL;
 	}
-
-	Patient(int patient_id, string name, string dob, string gender)
-	{
+	
+	Patient(int patient_id,  string name, string dob, string gender){
 		this->id = patient_id;
 		this->name = name;
 		this->dob = dob;
-		this->gender = gender;
+		this->gender  = gender;
 		this->next = NULL;
 	}
-
-	void print()
-	{
-		cout << "ID: " << this->id << "\tName:  " << this->name << "\tDate of Birth: " << this->dob << "\tGender: " << this->gender << endl;
+	
+	
+	void print(){
+		cout << "ID: " << this->id << "\tName:  " << this->name << "\tDate of Birth: " << this->dob << "\tGender: " << this->gender << endl; 
 	}
-
-	string to_string()
-	{
-		return "" + std::to_string(this->id) + "," + this->name + "," + this->dob + "," + this->gender;
+	
+	string to_string(){
+		return "" +  std::to_string(this->id) + "," + this->name + "," + this->dob + "," + this->gender;
 	}
 };
 
-class Appointment
-{
-public:
+class Appointment{
+	public:
+	
 	int id;
 	int patient_id;
 	int doctor_id;
 	string appointment_date;
-
+	
 	Appointment *next;
-
-	Appointment()
-	{
+	
+	Appointment(){
 		this->next = NULL;
 	}
-
-	Appointment(int appointment_id, int patient_id, int doctor_id, string appointment_date)
-	{
+	
+	Appointment(int appointment_id,  int patient_id, int doctor_id, string appointment_date){
 		this->id = appointment_id;
 		this->patient_id = patient_id;
 		this->doctor_id = doctor_id;
 		this->appointment_date = appointment_date;
 		this->next = NULL;
 	}
-
-	void print()
-	{
-		cout << "ID: " << this->id << "\tPatient ID:  " << this->patient_id << "\tDoctor ID: " << this->doctor_id << "\tAppointment date: " << this->appointment_date << endl;
+	
+	
+	void print(){
+		cout << "ID: " << this->id << "\tPatient ID:  " << this->patient_id << "\tDoctor ID: " << this->doctor_id << "\tAppointment date: " << this->appointment_date << endl; 
 	}
-
-	string to_string()
-	{
-		return "" + std::to_string(this->id) + "," + std::to_string(this->patient_id) + "," + std::to_string(this->doctor_id) + "," + this->appointment_date;
-	}
-};
-
-namespace validators
-{
-	bool is_string(string input)
-	{
-		bool matches = regex_match(input, regex("[A-Za-z\\s+]*"));
-		if (!matches)
-			cout << "Invalid string" << endl;
-		return matches;
-	};
-
-	bool is_date(string input)
-	{
-		cout << endl;
-		bool matches = regex_match(input, regex("^\\d{4}-\\d{2}-\\d{2}$"));
-		if (!matches)
-			cout << "Invalid date" << endl;
-		return matches;
-	};
-
-	bool is_gender(string input)
-	{
-		bool matches = regex_match(input, regex("(m|M|male|Male|f|F|female|Female|FEMALE|MALE)"));
-		if (!matches)
-			cout << "Invalid gender" << endl;
-		return matches;
+	
+	string to_string(){
+		return "" +  std::to_string(this->id) + "," + std::to_string(this->patient_id) + "," + std::to_string(this->doctor_id) + "," + this->appointment_date;
 	}
 };
 
@@ -268,45 +211,13 @@ namespace commands {
 				break; 
 			}
 		}
-		while (true)
-		{
-			string name;
-			cout << "NAME: ";
-			cin.ignore();
-			getline(cin, name);
-			if (validators::is_string(name))
-			{
-				new_patient->name = name;
-				break;
-			}
-		}
-		while (true)
-		{
-			string gender;
-			cout << "GENDER: ";
-			// cin.ignore();
-			getline(cin, gender);
-			if (validators::is_gender(gender))
-			{
-				new_patient->gender = gender;
-				break;
-			}
-		}
-		while (true)
-		{
-			string dob;
-			cout << "DoB: ";
-			// cin.ignore();
-			getline(cin, dob);
-			if (validators::is_date(dob))
-			{
-				new_patient->dob = dob;
-				break;
-			}
-		}
-
-
-
+		cout <<  "NAME: ";
+		cin.ignore();
+		getline(cin, new_patient->name);
+		cout << "DoB: ";
+		cin >> new_patient->dob;
+		cout  << "GENDER: ";
+		cin >> new_patient->gender;
 		patientsLL->add_node(new_patient);
 		
 	}
@@ -326,29 +237,11 @@ namespace commands {
 				break; 
 			}
 		}
-		while (true)
-		{
-			string name;
-			cout << "NAME: ";
-			cin.ignore();
-			getline(cin, name);
-			if (validators::is_string(name))
-			{
-				new_doctor->name = name;
-				break;
-			}
-		}
-		while (true)
-		{
-			string specialization;
-			cout << "SPECIALIZATION: ";
-			getline(cin, specialization);
-			if (validators::is_string(specialization))
-			{
-				new_doctor->specialization = specialization;
-				break;
-			}
-		}
+		cout <<  "NAME: ";
+		cin.ignore();
+		getline(cin, new_doctor->name);
+		cout << "SPECIALIZATION: ";
+		getline(cin, new_doctor->specialization);
 		doctorLL->add_node(new_doctor);
 		
 	}
@@ -393,19 +286,10 @@ namespace commands {
 				break; 
 			}
 		}
-
-		while (true)
-		{
-			string date;
-			cout << "DATE: ";
-			cin.ignore();
-			getline(cin, date);
-			if (validators::is_date(date))
-			{
-				new_appointment->appointment_date = date;
-				break;
-			}
-		}
+		
+		cout << "DATE: ";
+		cin >> new_appointment->appointment_date ;
+		
 
 		appointmentsLL->add_node(new_appointment);
 		
@@ -510,6 +394,7 @@ int main(){
 				commands::display(appointmentsLL);
 				break;
 			case 7:
+				
 				cout << "Saving appointments..\n"; 
 				appointmentsLL->save_to_csv(); 
 				
