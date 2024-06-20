@@ -82,7 +82,6 @@ class LinkedList {
 	}
 };
 
-
 class Doctor{
 	public:
 	
@@ -111,7 +110,6 @@ class Doctor{
 		return "" +  std::to_string(this->id) + "," + this->name + "," + this->specialization;
 	}
 };
-
 
 class Patient{
 	public:
@@ -145,7 +143,6 @@ class Patient{
 	}
 };
 
-
 class Appointment{
 	public:
 	
@@ -178,7 +175,6 @@ class Appointment{
 	}
 };
 
-
 namespace commands {
 	void help(){
 		cout << "Menu:\n";
@@ -203,8 +199,18 @@ namespace commands {
 		
 		cout << "PATIENT REGISTRATION \n_________________________" << endl;
 		Patient *new_patient = new Patient();
-		cout << "ID: ";
-		cin >> new_patient->id; 
+		
+		while(true){
+			int patientid;
+			cout <<  "ID: ";
+			cin >> patientid;
+			if(patientsLL->exists_by_id(patientid)) {
+				cout << "Given id already exists" << endl;
+			} else {
+				new_patient->id = patientid;
+				break; 
+			}
+		}
 		cout <<  "NAME: ";
 		cin.ignore();
 		getline(cin, new_patient->name);
@@ -220,8 +226,17 @@ namespace commands {
 		
 		cout << "\nDOCTOR REGISTRATION \n_________________________\n" << endl;
 		Doctor *new_doctor = new Doctor();
-		cout << "ID: ";
-		cin >> new_doctor->id; 
+		while(true){
+			int doctor_id;
+			cout <<  "ID: ";
+			cin >> doctor_id;
+			if(doctorLL->exists_by_id(doctor_id)) {
+				cout << "Given id already exists" << endl;
+			} else {
+				new_doctor->id = doctor_id;
+				break; 
+			}
+		}
 		cout <<  "NAME: ";
 		cin.ignore();
 		getline(cin, new_doctor->name);
@@ -236,8 +251,17 @@ namespace commands {
 		cout << "\nAPPOINTMENT REGISTRATION \n_________________________\n" << endl;
 		Appointment *new_appointment = new Appointment();
 		
-		cout << "ID: ";
-		cin >> new_appointment->id; 
+		while(true){
+			int appointment_id;
+			cout <<  "ID: ";
+			cin >> appointment_id;
+			if(appointmentsLL->exists_by_id(appointment_id)) {
+				cout << "Given id already exists" << endl;
+			} else {
+				new_appointment->id = appointment_id;
+				break; 
+			}
+		}
 		
 		while(true){
 			int patientid;
@@ -321,7 +345,6 @@ namespace commands {
 				
 				while(getline(file, line)){
 					stringstream ss(line);
-		
 					string id, p_id, d_id, date;
 					getline(ss, id, ',');
 					getline(ss, p_id, ',');
@@ -337,7 +360,6 @@ namespace commands {
 		}
 	}
 }
-
 
 int main(){
 	
@@ -374,22 +396,19 @@ int main(){
 			case 7:
 				char resp;
 				
-				cout << "Would you like to save data to your computer? [y/n]: ";
-				cin >> resp;
-				if(resp == 'y'){
-					
+				cout << "Saving all input data...";
+		
 					cout << "\n\n\nSaving appointments..." << endl;
 					appointmentsLL->save_to_csv(); 
-					cout  << endl;
 					
-					cout << "Saving patients..." << endl;
+					cout << "\nSaving patients..." << endl;
 					patientsLL->save_to_csv();
 					cout  << endl;
 							
-					cout << "Saving doctors..." << endl;
+					cout << "\nSaving doctors..." << endl;
 					doctorsLL->save_to_csv();
 					cout  << endl;
-				};
+
 				cout << "Bye!" << endl;
 				exit(0);
 				break;
