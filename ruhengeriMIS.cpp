@@ -2,9 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
-
 using namespace std;
-
 template <typename T>
 class LinkedList
 {
