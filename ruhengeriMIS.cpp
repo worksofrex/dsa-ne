@@ -394,27 +394,26 @@ int main(){
 				commands::display(appointmentsLL);
 				break;
 			case 7:
-				char resp;
 				
-				cout << "Saving all input data...";
-		
-					cout << "\n\n\nSaving appointments..." << endl;
-					appointmentsLL->save_to_csv(); 
-					
-					cout << "\nSaving patients..." << endl;
-					patientsLL->save_to_csv();
-					cout  << endl;
-							
-					cout << "\nSaving doctors..." << endl;
-					doctorsLL->save_to_csv();
-					cout  << endl;
-
-				cout << "Bye!" << endl;
+				cout << "Saving appointments..\n"; 
+				appointmentsLL->save_to_csv(); 
+				
+				cout << "Saving patients..\n"; 
+				patientsLL->save_to_csv();
+				
+				cout << "Saving doctors..\n"; 
+				doctorsLL->save_to_csv();
+				cout << "DONE !";
+				cout  << endl;
+				cout << ":)>>  Bye!" << endl;
 				exit(0);
 				break;
 			default:
 				cout << "! Invalid command\n See how this system is used below \n";
 		}
+		
+		// Break for  a new command
+		cout <<  "\n\n" ;
 		
 	}
 	
