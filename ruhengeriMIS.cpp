@@ -3,12 +3,12 @@
 #include <sstream>
 #include <regex>
 using namespace std;
+
 template <typename T>
 class LinkedList
 {
+	public:
 	T *head;
-
-public:
 	string filename;
 	LinkedList(string filename)
 	{
@@ -19,6 +19,19 @@ public:
 	bool is_empty()
 	{
 		return head == NULL;
+	}
+	
+	T* find_by_id(int id){
+		if(is_empty()) return NULL;
+		T *temp = this->head;
+		while (temp != NULL)
+		{
+			if (temp->id == id)
+			{
+				return temp;
+			}
+			temp = temp->next;
+		}
 	}
 
 	void add_node(T *newNode)
@@ -130,6 +143,7 @@ public:
 	{
 		return "" + std::to_string(this->id) + "," + this->name + "," + this->specialization;
 	}
+	
 };
 
 class Patient
@@ -249,6 +263,27 @@ namespace commands {
 	void display(LinkedList<T> *l){
 		l->print_nodes();
 	}
+	
+	
+	void display_appointments(LinkedList<Appointment> *appointments_ll, LinkedList<Doctor> *doctors_ll, LinkedList<Patient> *patient_ll){
+		if(appointments_ll->is_empty()) {
+			cout  << "There are no appointments scheduled. " <<  endl;
+			return;
+		}
+ 	    Appointment *temp = appointments_ll->head;
+		while (temp != NULL)
+		{
+			Patient *patient = patient_ll->find_by_id(temp->patient_id);
+			Doctor *doctor  =  doctors_ll->find_by_id(temp->doctor_id);
+			if(patient == NULL ||  doctor == NULL) {
+				cout  << "Patient or doctor not found" <<  endl;
+				return;
+			}
+			cout <<  "ID: " << temp->id << "\tPatient Name: " <<  patient->name << "\tDoctor: " << doctor->name << "\tAppointment date: " << temp->appointment_date <<   endl;
+			temp = temp->next;
+		}
+	}
+	
 	
 	void register_patient(LinkedList<Patient> *patientsLL){
 		
@@ -505,7 +540,7 @@ int main(){
 				commands::display(doctorsLL);
 				break;
 			case 6: 
-				commands::display(appointmentsLL);
+				commands::display_appointments(appointmentsLL, doctorsLL, patientsLL);
 				break;
 			case 7:
 				cout << "Saving appointments..\n"; 
